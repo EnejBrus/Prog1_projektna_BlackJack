@@ -19,11 +19,11 @@ let draw_card () =
   Random.self_init ();
   Random.int 11 + 1
 
-(* Funkcija za preverjanje, če je igralec ali dealer presegel 21 *)
+(* Funkcija za preverjanje, če je vsota večja od 21 (izpad) *)
 let is_bust sum = 
   sum > 21
 
-(* Funkcija za preverjanje zmage *)
+(* Funkcija za preverjanje zmagovalca in vrnitev rezultata *)
 let check_winner st =
   if st.player_sum = 21 then
     "Igralec ima BlackJack! Zmaga!"
@@ -40,7 +40,7 @@ let check_winner st =
   else
     "Neodločeno!"
 
-(* Funkcija za posodobitev stanja stav *)
+(* Funkcija za postavitev stave (preveri, če je stava dovoljena) *)
 let place_bet st bet_amount =
   if bet_amount > st.player_money then
     failwith "Stava presega razpoložljiv denar!"
@@ -48,15 +48,24 @@ let place_bet st bet_amount =
     st.player_bet <- bet_amount;
     st.player_money <- st.player_money - bet_amount
 
-(* Funkcija za dealerjevo potezo *)
+(* Dealerjeva poteza, dealer vleče karte, dokler ne doseže vsaj 17 *)
 let dealer_turn st =
   while st.dealer_sum < 17 do
     let card = draw_card () in
     st.dealer_sum <- st.dealer_sum + card;
   done
 
-(* Funkcija za igro igralca *)
-let player_turn st =
-  let card = draw_card () in
-  st.player_sum <- st.player_sum + card
-
+(* Funkcija za izplačilo ob zmagi *)
+let payout st result =
+  match result with
+  | "Igralec zmaga!" | "Igralec ima BlackJack! Zmaga!" ->
+      let winnings = st.player_bet * 2 in
+      st.player_money <- st.player_money + winnings;
+      Printf.printf "Čestitamo! Zmagali ste %d in zdaj imate %d denarja.\n"
+        winnings st.player_money
+  | "Neodločeno!" ->
+      st.player_money <- st.player_money + st.player_bet;  (* Vračamo stavo *)
+      Printf.printf "Neodločeno! Stava %d je vrnjena. Zdaj imate %d denarja.\n"
+        st.player_bet st.player_money
+  | _ ->
+      Printf.printf "Izgubili ste stavo. Trenutno stanje denarja: %d\n" st.player_money

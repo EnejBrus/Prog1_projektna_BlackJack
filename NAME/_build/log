@@ -1,0 +1,5 @@
+# dune init project NAME
+# OCAMLPARAM: unset
+# Shared cache: disabled
+# Workspace root: /workspaces/Prog1_projektna_BlackJack/NAME
+# Auto-detected concurrency: 8

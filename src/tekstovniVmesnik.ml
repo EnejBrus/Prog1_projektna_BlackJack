@@ -1,4 +1,3 @@
-(* Uvozimo funkcije iz game.ml *)
 open Avtomat
 
 (* Funkcija za pridobitev vložka igralca *)
@@ -29,7 +28,7 @@ let rec player_move st =
   let choice = read_line () in
   match choice with
   | "h" -> 
-      player_turn st;
+      dealer_turn st;
       Printf.printf "Nova vsota igralca: %d\n" st.player_sum;
       if is_bust st.player_sum then
         Printf.printf "Presegel si 21! Izpad!\n"
@@ -45,15 +44,36 @@ let rec player_move st =
 (* Funkcija za prikaz rezultata *)
 let show_result st =
   let result = check_winner st in
-  Printf.printf "Rezultat: %s\n" result
+  Printf.printf "Rezultat: %s\n" result;
+  payout st result  (* Izplačilo ob zmagi *)
+
+(* Funkcija za ponovno igro *)
+let rec ask_replay st =
+  if st.player_money <= 0 then (
+    Printf.printf "Zmanjkalo ti je denarja. Igra je končana.\n";
+    false
+  ) else (
+    Printf.printf "Želiš igrati ponovno? (y/n): ";
+    match read_line () with
+    | "y" -> true
+    | "n" -> false
+    | _ -> 
+        Printf.printf "Napačna izbira!\n";
+        ask_replay st
+  )
 
 (* Funkcija za zagon igre *)
-let play_game () =
+let rec play_game () =
   let st = init_state () in
-  ask_for_bet st;
-  show_initial_state st;
-  player_move st;
-  show_result st
-
+  let rec game_loop () =
+    ask_for_bet st;
+    show_initial_state st;
+    player_move st;
+    show_result st;
+    if ask_replay st then game_loop ()
+  in
+  game_loop ()
 ;;
 
+(* Klic funkcije za začetek igre *)
+play_game ()

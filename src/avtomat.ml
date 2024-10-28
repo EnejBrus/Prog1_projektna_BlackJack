@@ -14,6 +14,11 @@ let init_state () = {
   player_bet = 0;
 }
 
+(* Funkcija za ponastavitev denarja, ko igralec ostane brez njega *)
+let reset_money st =
+  st.player_money <- 1000;
+  Printf.printf "Zmanjkalo vam je denarja. Začenjate znova z %d denarja.\n" st.player_money
+
 (* Funkcija za generiranje naključne karte (od 1 do 11) *)
 let draw_card () = 
   Random.self_init ();
@@ -48,7 +53,7 @@ let place_bet st bet_amount =
     st.player_bet <- bet_amount;
     st.player_money <- st.player_money - bet_amount
 
-(* Dealerjeva poteza, dealer vleče karte, dokler njegova vsota ni vsaj 17 *)
+(* Dealerjeva poteza, kjer dealer vleče karte, dokler ne doseže vsaj 17 *)
 let dealer_turn st =
   while st.dealer_sum < 17 do
     let card = draw_card () in

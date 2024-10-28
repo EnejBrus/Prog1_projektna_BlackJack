@@ -48,8 +48,8 @@ let show_result st =
 (* Funkcija za ponovno igro *)
 let rec ask_replay st =
   if st.player_money <= 0 then (
-    Printf.printf "Zmanjkalo ti je denarja. Igra je končana.\n";
-    false
+    reset_money st;  (* Ponastavi denar na 1000 *)
+    true  (* Nadaljujemo igro *)
   ) else (
     Printf.printf "Želiš igrati ponovno? (y/n): ";
     match read_line () with

@@ -27,6 +27,9 @@ val dealer_turn : state -> unit
 (* Funkcija za igralčevo potezo "hit" *)
 val hit : state -> unit
 
+(* Funkcija za ponastavitev denarja na začetno vrednost *)
+val reset_money : state -> unit
+
 (* Funkcija za potezo "stand" *)
 val stand : state -> unit
 

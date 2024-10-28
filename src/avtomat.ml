@@ -48,17 +48,29 @@ let place_bet st bet_amount =
     st.player_bet <- bet_amount;
     st.player_money <- st.player_money - bet_amount
 
-(* Dealerjeva poteza, dealer vleče karte, dokler ne doseže vsaj 17 *)
+(* Dealerjeva poteza, dealer vleče karte, dokler njegova vsota ni vsaj 17 *)
 let dealer_turn st =
   while st.dealer_sum < 17 do
     let card = draw_card () in
     st.dealer_sum <- st.dealer_sum + card;
+    Printf.printf "Dealer potegne karto: %d (vsota dealerja: %d)\n" card st.dealer_sum
   done
+
+(* Funkcija za igralčevo potezo "hit" *)
+let hit st =
+  let card = draw_card () in
+  st.player_sum <- st.player_sum + card;
+  Printf.printf "Potegnil si karto: %d (nova vsota igralca: %d)\n" card st.player_sum
+
+(* Funkcija za potezo "stand" *)
+let stand st =
+  Printf.printf "Obstaneš z vsoto: %d\n" st.player_sum;
+  dealer_turn st
 
 (* Funkcija za izplačilo ob zmagi *)
 let payout st result =
   match result with
-  | "Igralec zmaga!" | "Igralec ima BlackJack! Zmaga!" ->
+  | "Igralec zmaga!" | "Igralec ima BlackJack! Zmaga!" | "Dealer ima več kot 21! Igralec zmaga!" ->
       let winnings = st.player_bet * 2 in
       st.player_money <- st.player_money + winnings;
       Printf.printf "Čestitamo! Zmagali ste %d in zdaj imate %d denarja.\n"

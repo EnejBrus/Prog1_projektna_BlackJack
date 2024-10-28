@@ -28,15 +28,13 @@ let rec player_move st =
   let choice = read_line () in
   match choice with
   | "h" -> 
-      dealer_turn st;
-      Printf.printf "Nova vsota igralca: %d\n" st.player_sum;
+      hit st;
       if is_bust st.player_sum then
         Printf.printf "Presegel si 21! Izpad!\n"
       else
         player_move st  (* Ponovno vprašanje za potezo *)
   | "s" -> 
-      Printf.printf "Obstaneš z vsoto: %d\n" st.player_sum;
-      dealer_turn st  (* Zdaj igra dealer *)
+      stand st;  (* Igralec obstane, igra dealer *)
   | _ -> 
       Printf.printf "Napačna izbira! Izberi ponovno.\n";
       player_move st

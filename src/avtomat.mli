@@ -24,7 +24,11 @@ val place_bet : state -> int -> unit
 (* Dealerjeva poteza, kjer dealer vleče karte, dokler ne doseže vsaj 17 *)
 val dealer_turn : state -> unit
 
+(* Funkcija za igralčevo potezo "hit" *)
+val hit : state -> unit
 
+(* Funkcija za potezo "stand" *)
+val stand : state -> unit
 
-(* Funkcija za izplačilo ob zmagi, ki ustrezno posodobi denar igralca *)
+(* Funkcija za izplačilo ob zmagi *)
 val payout : state -> string -> unit

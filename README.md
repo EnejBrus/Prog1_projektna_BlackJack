@@ -21,11 +21,11 @@ Projekt sledi zasnovi **Moorejevega avtomata**, kjer je izhod določen s trenutn
 
 ## Navodila za zagon
 Kompilirajte projekt s spodnjimi ukazi:
-* ocamlc -c game.mli
-* ocamlc -c game.ml
-* ocamlc -c interface.mli
-* ocamlc -c interface.ml
-* ocamlc -o blackjack game.cmo interface.cmo
+* ocamlc -c avtomat.mli
+* ocamlc -c avtomat.ml
+* ocamlc -c spletniVmesnik.mli
+* ocamlc -c spletniVmesnik.ml
+* ocamlc -o blackjack avtomat.cmo spletniVmesnik.cmo
 
 Po kompilaciji zaženite igro s:
 * ./blackjack
